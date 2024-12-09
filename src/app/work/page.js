@@ -9,7 +9,7 @@ const WorkshopDocumentationPage = () => (
           GDG React Game Development Workshop
         </h1>
         <p className="text-lg mt-2 text-gray-200">
-          Step-by-step guide to building the GDG Space Fighters game.
+          Master React Basics and Build the GDG Space Fighters Game!
         </p>
       </div>
     </div>
@@ -20,57 +20,132 @@ const WorkshopDocumentationPage = () => (
         Workshop Overview
       </h2>
       <p className="mb-4 text-lg text-gray-300">
-        In this workshop, we will build the GDG Space Fighters game using React,
-        step by step. By the end of this session, you will have learned how to:
+        This workshop is divided into two parts:
       </p>
       <ul className="list-disc pl-8 mb-8 text-gray-300">
-        <li>Set up a React project for game development.</li>
-        <li>Use components, hooks, and state management to build a game.</li>
-        <li>Implement collision detection, animations, and interactive gameplay.</li>
+        <li>
+          <strong>Part 1</strong>: Learn React Basics - Environment setup and creating a Todo List application.
+        </li>
+        <li>
+          <strong>Part 2</strong>: Build the GDG Space Fighters game using React.
+        </li>
       </ul>
 
       <h2 className="text-3xl font-bold mb-6 text-gdgYellow">Agenda</h2>
       <ul className="list-disc pl-8 mb-8 text-gray-300">
-        <li><strong>10 minutes</strong>: Project setup and understanding the tools.</li>
-        <li><strong>30 minutes</strong>: Step-by-step implementation of game components.</li>
-        <li><strong>10 minutes</strong>: Adding interactivity and debugging live.</li>
-        <li><strong>10 minutes</strong>: Q&A and wrap-up.</li>
+        <li><strong>30 minutes</strong>: React Basics - Environment setup and Todo List application.</li>
+        <li><strong>30 minutes</strong>: GDG Space Fighters game development.</li>
       </ul>
 
-      <h2 className="text-3xl font-bold mb-6 text-gdgYellow">Step-by-Step Guide</h2>
-
-      {/* Step 1: Setting up the Project */}
-      <section className="mb-8">
-        <h3 className="text-2xl font-bold text-gdgGreen">Step 1: Setting up the Project</h3>
+      {/* Part 1: React Basics */}
+      <section className="mb-12">
+        <h2 className="text-3xl font-bold mb-6 text-gdgGreen">
+          Part 1: React Basics - Environment Setup and Todo List Application
+        </h2>
         <p className="text-gray-300 mb-4">
-          Start by creating a new React project and installing the necessary dependencies.
+          In the first part of the workshop, we will cover:
+        </p>
+        <ul className="list-disc pl-8 mb-4 text-gray-300">
+          <li>Setting up the development environment.</li>
+          <li>Understanding React basics through a simple Todo List application.</li>
+        </ul>
+
+        <h3 className="text-2xl font-bold text-gdgYellow mb-4">Step 1: Setting Up the Environment</h3>
+        <p className="text-gray-300 mb-4">
+          We will guide attendees through the setup process:
         </p>
         <ol className="list-decimal pl-8 text-gray-300">
           <li>
-            Create a new React project:
+            <strong>Install Node.js:</strong> Visit the 
+            <a href="https://nodejs.org" className="text-gdgBlue" target="_blank" rel="noopener noreferrer"> Node.js website</a> and download the latest LTS version.
+          </li>
+          <li>
+            <strong>Install VS Code:</strong> Download Visual Studio Code from the 
+            <a href="https://code.visualstudio.com/" className="text-gdgBlue" target="_blank" rel="noopener noreferrer"> official website</a> and install it.
+          </li>
+          
+        </ol>
+
+        <h3 className="text-2xl font-bold text-gdgYellow mt-8 mb-4">Step 2: Creating a React Project</h3>
+        <ol className="list-decimal pl-8 text-gray-300">
+          <li>
+            <strong>Create a new React project:</strong>
             <pre className="bg-gray-800 text-white p-4 rounded mt-2">
-              npx create-react-app gdg-space-fighters
+              npx create-react-app todo-app
+            </pre>
+            Explain that this command bootstraps a new React project with all the necessary setup.
+          </li>
+          <li>
+            <strong>Navigate to the project directory:</strong>
+            <pre className="bg-gray-800 text-white p-4 rounded mt-2">
+              cd todo-app
             </pre>
           </li>
           <li>
-            Navigate to the project directory:
+            Open the project in VS Code:
             <pre className="bg-gray-800 text-white p-4 rounded mt-2">
-              cd gdg-space-fighters
-            </pre>
-          </li>
-          <li>
-            Install Jotai for state management:
-            <pre className="bg-gray-800 text-white p-4 rounded mt-2">
-              npm install jotai
+              code .
             </pre>
           </li>
         </ol>
+
+        <h3 className="text-2xl font-bold text-gdgYellow mt-8 mb-4">Step 3: Building the Todo List</h3>
+        <p className="text-gray-300 mb-4">
+          In this step, we will implement the Todo List application:
+        </p>
+        <ul className="list-disc pl-8 text-gray-300">
+          <li>Create a new file named <code>Todo.jsx</code>.</li>
+          <li>Write a functional React component to manage tasks using <code>useState</code>.</li>
+          <li>Explain the JSX structure and rendering logic for the Todo List.</li>
+          <li>Add functionality to add tasks and render the list dynamically.</li>
+        </ul>
+
         <p className="text-gray-300 mt-4">
-          Next, open the project in your favorite code editor, and you’re ready to start coding!
+          At the end of this step, attendees will have a working Todo List application!
         </p>
       </section>
 
-      {/* Step 2: Creating the GameBoard */}
+      {/* Part 2: Game Development with React */}
+      <section>
+        <h2 className="text-3xl font-bold mb-6 text-gdgGreen">
+          Part 2: GDG Space Fighters Game Development
+        </h2>
+        <p className="text-gray-300 mb-4">
+          In the second part, we will build the GDG Space Fighters game step by step.
+        </p>
+      </section>
+        {/* Replacing with your updated Part 2 */}
+        <section className="mb-8">
+          <h3 className="text-2xl font-bold text-gdgGreen">Step 1: Setting up the Project</h3>
+          <p className="text-gray-300 mb-4">
+            Start by creating a new React project and installing the necessary dependencies.
+          </p>
+          <ol className="list-decimal pl-8 text-gray-300">
+            <li>
+              Create a new React project:
+              <pre className="bg-gray-800 text-white p-4 rounded mt-2">
+                npx create-react-app gdg-space-fighters
+              </pre>
+            </li>
+            <li>
+              Navigate to the project directory:
+              <pre className="bg-gray-800 text-white p-4 rounded mt-2">
+                cd gdg-space-fighters
+              </pre>
+            </li>
+            <li>
+              Install Jotai for state management:
+              <pre className="bg-gray-800 text-white p-4 rounded mt-2">
+                npm install jotai
+              </pre>
+            </li>
+          </ol>
+          <p className="text-gray-300 mt-4">
+            Next, open the project in your favorite code editor, and you’re ready to start coding!
+          </p>
+        </section>
+
+         {/* Step 2: Creating the GameBoard */}
       <section className="mb-8">
         <h3 className="text-2xl font-bold text-gdgGreen">Step 2: Creating the GameBoard</h3>
         <p className="text-gray-300 mb-4">
@@ -150,5 +225,4 @@ const WorkshopDocumentationPage = () => (
     </main>
   </div>
 );
-
 export default WorkshopDocumentationPage;
