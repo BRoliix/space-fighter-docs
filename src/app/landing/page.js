@@ -73,6 +73,14 @@ const LandingPage = () => (
           Bullet Component
         </Link>
 
+         {/* Timer Component */}
+         <Link
+          href="/timer"
+          className="block p-4 bg-gdgRed text-white rounded-lg shadow-md hover:shadow-lg hover:bg-red-700 transition-transform transform hover:-translate-y-1 duration-300"
+        >
+          Timer Component
+        </Link>
+
         {/* useGameLoop Hook */}
         <Link
           href="/usegameloop"

@@ -4,94 +4,101 @@ import CodeDisplay from "../../components/CodeDisplay";
 const CollisionManagerPage = () => {
   const sections = [
     {
-      title: "1. Import Statements",
-      code: `
-        import { useEffect } from 'react';
-        import { useAtom } from 'jotai';
-        import { collisionStateAtom } from '../store/atom';
-      `,
+      title: "1. File Declaration and Imports",
+      code: `import { useEffect } from 'react';
+import { useAtom } from 'jotai';
+import { collisionStateAtom } from '../store/atom';`,
       explanation:
-        "This imports:\n" +
-        "- `useEffect` from React for handling side effects.\n" +
-        "- `useAtom` from `jotai` to manage the `collisionStateAtom` state atom.\n" +
-        "- `collisionStateAtom` to track if a collision is currently happening.",
+        "The file starts with:\n" +
+        "- Component file declaration\n" +
+        "- `useEffect` hook import for managing side effects\n" +
+        "- `useAtom` from Jotai for state management\n" +
+        "- `collisionStateAtom` for tracking collision state",
     },
     {
-      title: "2. Functional Component Declaration",
-      code: `
-        const CollisionManager = ({ 
-          obstacles, 
-          playerPosition, 
-          setGameOver,
-          gameOver 
-        }) => { ... };
-      `,
+      title: "2. Component Declaration and Props",
+      code: `const CollisionManager = ({ 
+  obstacles, 
+  playerPosition, 
+  setGameOver,
+  gameOver 
+}) => {
+  const [isColliding, setIsColliding] = useAtom(collisionStateAtom);`,
       explanation:
-        "The `CollisionManager` component receives props for the list of obstacles, the player's position, and functions to handle the game-over state. It uses these to check for collisions and update the game state accordingly.",
+        "Component setup:\n" +
+        "- Declares CollisionManager component with destructured props\n" +
+        "- `obstacles`: Array of current obstacles\n" +
+        "- `playerPosition`: Current position of the spaceship\n" +
+        "- `setGameOver`: Function to end the game\n" +
+        "- `gameOver`: Current game state\n" +
+        "- Initializes collision state using Jotai's useAtom",
     },
     {
-      title: "3. Reset Collision State",
-      code: `
-        useEffect(() => {
-          if (!gameOver) {
-            setIsColliding(false);
-          }
-        }, [gameOver, setIsColliding]);
-      `,
+      title: "3. Collision State Reset Effect",
+      code: `  useEffect(() => {
+    if (!gameOver) {
+      setIsColliding(false);
+    }
+  }, [gameOver, setIsColliding]);`,
       explanation:
-        "This `useEffect` hook resets the collision state when the game is not over. It ensures that the collision detection logic starts fresh for a new game.",
+        "First useEffect hook:\n" +
+        "- Resets collision state when game is active\n" +
+        "- Runs when gameOver state changes\n" +
+        "- Dependencies include gameOver and setIsColliding",
     },
     {
-      title: "4. Collision Detection Logic",
-      code: `
-        useEffect(() => {
-          const checkCollisions = () => {
-            obstacles.forEach(obstacle => {
-              const spaceshipWidth = 50;
-              const spaceshipHeight = 50;
-              
-              const playerCollision = 
-                obstacle.x < (playerPosition.x + spaceshipWidth) &&
-                (obstacle.x + 20) > playerPosition.x &&
-                obstacle.y > (600 - spaceshipHeight - 20) &&
-                (obstacle.y + 20) > (600 - spaceshipHeight);
-              
-              if (playerCollision && !isColliding) {
-                setIsColliding(true);
-                setGameOver(true);
-              }
-            });
-          };
+      title: "4. Main Collision Detection Effect",
+      code: `  useEffect(() => {
+    const checkCollisions = () => {
+      obstacles.forEach(obstacle => {
+        const spaceshipWidth = 50;
+        const spaceshipHeight = 50;
+        
+        const playerCollision = 
+          obstacle.x < (playerPosition.x + spaceshipWidth) &&
+          (obstacle.x + 20) > playerPosition.x &&
+          obstacle.y > (600 - spaceshipHeight - 20) &&
+          (obstacle.y + 20) > (600 - spaceshipHeight);
+        
+        if (playerCollision && !isColliding) {
+          setIsColliding(true);
+          setGameOver(true);
+        }
+      });
+    };
 
-          const collisionInterval = setInterval(checkCollisions, 16);
-          return () => clearInterval(collisionInterval);
-        }, [obstacles, playerPosition, isColliding, setGameOver, setIsColliding]);
-      `,
+    const collisionInterval = setInterval(checkCollisions, 16);
+    return () => clearInterval(collisionInterval);
+  }, [obstacles, playerPosition, isColliding, setGameOver, setIsColliding]);`,
       explanation:
-        "This `useEffect` hook sets up the main collision detection logic:\n" +
-        "- It iterates over all obstacles to check if they overlap with the player's spaceship.\n" +
-        "- The spaceship's width and height are taken into account for precise collision detection.\n" +
-        "- If a collision is detected, the game is marked as over, and the collision state is updated.\n" +
-        "- The logic runs every 16ms using `setInterval` for smooth updates.",
+        "Main collision detection logic:\n" +
+        "- Defines checkCollisions function that:\n" +
+        "  • Sets spaceship dimensions (50x50)\n" +
+        "  • Checks each obstacle for overlap with spaceship\n" +
+        "  • Uses precise collision detection formula\n" +
+        "  • Updates game state on collision\n" +
+        "- Sets up 60 FPS interval (16ms)\n" +
+        "- Includes cleanup function\n" +
+        "- Dependencies track all relevant state changes",
     },
     {
-      title: "5. Null Render",
-      code: `return null;`,
+      title: "5. Component Return and Export",
+      code: `  return null;
+};
+
+export default CollisionManager;`,
       explanation:
-        "The `CollisionManager` does not render any UI elements. It runs in the background to manage collisions and update the game state.",
-    },
-    {
-      title: "6. Export Statement",
-      code: `export default CollisionManager;`,
-      explanation: "Exports the `CollisionManager` component so it can be used in the game board or other parts of the application.",
-    },
+        "Component completion:\n" +
+        "- Returns null as this is a logical component with no UI\n" +
+        "- Exports the component for use in other parts of the application",
+    }
   ];
 
   return (
     <div className="p-8 bg-black text-white">
       <h1 className="text-3xl font-bold mb-6 text-gdgBlue">Collision Manager Component</h1>
       <p className="mb-4 text-lg text-gdgGreen">
-        The Collision Manager component handles the logic for detecting collisions between obstacles and the spaceship. Below, we break down its implementation.
+        The Collision Manager component handles collision detection between obstacles and the spaceship. It runs at 60 FPS and manages game state accordingly.
       </p>
       <div className="space-y-8">
         {sections.map((section, index) => (

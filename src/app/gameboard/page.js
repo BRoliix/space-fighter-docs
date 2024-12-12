@@ -2,38 +2,213 @@ import CodeDisplay from '../../components/CodeDisplay';
 import React from "react";
 
 const GameBoardPage = () => {
-  const sections = [
-    {
-      title: "1. Import Statements",
-      code: `import { useAtom } from 'jotai';\nimport { useCallback, useEffect } from 'react';\nimport { bulletsAtom, gameOverAtom, obstaclesAtom, playerPositionAtom, scoreAtom } from '../store/atom';\nimport '../styles/App.css';\nimport Bullet from './Bullet';\nimport CollisionManager from './CollisionManager';\nimport GameOverMenu from './GameOverMenu';\nimport Obstacle from './Obstacle';\nimport Spaceship from './Spaceship';`,
-      explanation:
-        "This section imports all necessary libraries, components, and atoms. `jotai` is used for state management, and custom components like `Spaceship`, `Obstacle`, and `Bullet` handle the visual and functional parts of the game.",
-    },
-    {
-      title: "2. Declaring Atoms and State Variables",
-      code: `const [playerPosition, setPlayerPosition] = useAtom(playerPositionAtom);\nconst [score, setScore] = useAtom(scoreAtom);\nconst [gameOver, setGameOver] = useAtom(gameOverAtom);\nconst [obstacles, setObstacles] = useAtom(obstaclesAtom);\nconst [bullets, setBullets] = useAtom(bulletsAtom);`,
-      explanation:
-        "Here, the `useAtom` hook from `jotai` is used to manage the game's state. These atoms store the state for the player's position, score, game status, obstacles, and bullets.",
-    },
-    {
-      title: "3. Handling Keyboard Input",
-      code: `const handleKeyPress = useCallback((e) => {\n  if (gameOver) return;\n  const MOVE_DISTANCE = 20;\n  const MAX_POSITION = 750;\n  switch(e.key) {\n    case 'ArrowLeft':\n      setPlayerPosition(prev => ({ ...prev, x: Math.max(0, prev.x - MOVE_DISTANCE) }));\n      break;\n    case 'ArrowRight':\n      setPlayerPosition(prev => ({ ...prev, x: Math.min(MAX_POSITION, prev.x + MOVE_DISTANCE) }));\n      break;\n    case ' ':\n      setBullets(prev => [...prev, { id: Date.now(), x: playerPosition.x + 23, y: 530 }]);\n      break;\n    default:\n      break;\n  }\n}, [playerPosition, gameOver, setPlayerPosition, setBullets]);`,
-      explanation:
-        "This function handles keyboard input for moving the spaceship and firing bullets. It listens for 'ArrowLeft', 'ArrowRight', and 'Space' keys. The position of the player is updated, and a new bullet is added when the space bar is pressed.",
-    },
-    {
-      title: "4. Game Loop and Effects",
-      code: `useEffect(() => {\n  window.addEventListener('keydown', handleKeyPress);\n  const gameLoop = setInterval(() => {\n    if (!gameOver) {\n      // Move bullets\n      setBullets(prev => prev.map(bullet => ({ ...bullet, y: bullet.y - 10 })).filter(bullet => bullet.y > 0));\n      // Move obstacles\n      setObstacles(prev => {\n        const updated = prev.map(obstacle => ({ ...obstacle, y: obstacle.y + 3 })).filter(obstacle => obstacle.y < 600);\n        if (Math.random() < 0.05) {\n          updated.push({ id: Date.now(), x: Math.random() * 780, y: -20 });\n        }\n        return updated;\n      });\n      setScore(prev => prev + 1);\n    }\n  }, 50);\n  return () => {\n    window.removeEventListener('keydown', handleKeyPress);\n    clearInterval(gameLoop);\n  };\n}, [gameOver, handleKeyPress, setBullets, setObstacles, setScore]);`,
-      explanation:
-        "The `useEffect` hook sets up the game loop, moving bullets and obstacles at regular intervals and updating the score. It also listens for keyboard events and cleans up resources when the component unmounts.",
-    },
-    {
-      title: "5. Rendering the Game Board",
-      code: `<div className="game-container">\n  <div className="score-display">Score: {score}</div>\n  {obstacles.map(obstacle => (\n    <Obstacle key={obstacle.id} x={obstacle.x} y={obstacle.y} />\n  ))}\n  {bullets.map(bullet => (\n    <Bullet key={bullet.id} x={bullet.x} y={bullet.y} />\n  ))}\n  <Spaceship position={playerPosition} />\n  <CollisionManager\n      obstacles={obstacles}\n      playerPosition={playerPosition}\n      setGameOver={setGameOver}\n      gameOver={gameOver}\n    />\n  {gameOver && (\n    <GameOverMenu \n      score={score} \n      onRestart={() => {\n        setGameOver(false);\n        setScore(0);\n        setObstacles([]);\n        setBullets([]);\n        setPlayerPosition({ x: 375, y: 20 });\n      }} \n    />\n  )}\n</div>`,
-      explanation:
-        "This section renders the game board, including the score display, obstacles, bullets, spaceship, and collision manager. When the game is over, a `GameOverMenu` is displayed with an option to restart the game.",
-    },
-  ];
+    const sections = [
+        {
+          title: "1. Client-Side Setup and Core Imports",
+          code: `"use client"
+      import React, { useEffect, useCallback, useState } from 'react';
+      import { useAtom } from 'jotai';
+      import { 
+        playerPositionAtom, scoreAtom, gameOverAtom, 
+        obstaclesAtom, bulletsAtom, timerAtom 
+      } from '../store/atom';`,
+          explanation: "Enables client-side rendering in Next.js and imports essential React hooks and Jotai for atomic state management. The 'use client' directive is crucial for interactive components that need browser APIs.",
+        },
+        {
+          title: "2. Component Imports",
+          code: `import Bullet from './Bullet';
+      import Spaceship from './Spaceship';
+      import Obstacle from './Obstacle';
+      import GameOverMenu from './GameOverMenu';
+      import CollisionManager from './CollisionManager';
+      import Timer from './Timer';`,
+          explanation: "Imports modular game components. Each component handles a specific game element, following the single responsibility principle.",
+        },
+        {
+          title: "3. State Initialization",
+          code: `const GameBoard = () => {
+        const [playerPosition, setPlayerPosition] = useAtom(playerPositionAtom);
+        const [score, setScore] = useAtom(scoreAtom);
+        const [gameOver, setGameOver] = useAtom(gameOverAtom);
+        const [obstacles, setObstacles] = useAtom(obstaclesAtom);
+        const [bullets, setBullets] = useAtom(bulletsAtom);
+        const [, setTime] = useAtom(timerAtom);`,
+          explanation: "Initializes game state using Jotai atoms. Each piece of state is managed independently, allowing for granular updates and optimized rendering.",
+        },
+        {
+          title: "4. Responsive Container Setup",
+          code: `const [containerDimensions, setContainerDimensions] = useState({
+          width: 800,
+          height: 600
+        });
+      
+        useEffect(() => {
+          const updateDimensions = () => {
+            const width = Math.min(window.innerWidth * 0.95, 800);
+            const height = Math.min(window.innerHeight * 0.9, 600);
+            setContainerDimensions({ width, height });
+          };
+      
+          window.addEventListener('resize', updateDimensions);
+          updateDimensions();
+          return () => window.removeEventListener('resize', updateDimensions);
+        }, []);`,
+          explanation: "Manages responsive game container sizing. Dynamically adjusts to window size while maintaining maximum dimensions. Includes cleanup to prevent memory leaks.",
+        },
+        {
+          title: "5. Movement Constants and Calculations",
+          code: `const MOVE_DISTANCE = containerDimensions.width * 0.025;
+      const MAX_POSITION = containerDimensions.width - 80;
+      const BULLET_OFFSET_X = containerDimensions.width * 0.029;
+      const BULLET_START_Y = containerDimensions.height * 0.88;`,
+          explanation: "Defines movement-related constants using relative measurements. These ensure consistent gameplay feel across different screen sizes.",
+        },
+        {
+          title: "6. Keyboard Input Handler",
+          code: `const handleKeyPress = useCallback((e) => {
+          if (gameOver) return;
+          
+          switch(e.key) {
+            case 'ArrowLeft':
+              setPlayerPosition(prev => ({
+                ...prev,
+                x: Math.max(0, prev.x - MOVE_DISTANCE)
+              }));
+              break;
+            case 'ArrowRight':
+              setPlayerPosition(prev => ({
+                ...prev,
+                x: Math.min(MAX_POSITION, prev.x + MOVE_DISTANCE)
+              }));
+              break;
+            case ' ':
+              setBullets(prev => [...prev, {
+                id: Date.now(),
+                x: playerPosition.x + BULLET_OFFSET_X,
+                y: BULLET_START_Y
+              }]);
+              break;
+            default:
+              break;
+          }
+        }, [playerPosition, gameOver, containerDimensions, setPlayerPosition, setBullets]);`,
+          explanation: "Handles keyboard input for player movement and shooting. Uses memoization to prevent unnecessary re-renders and includes boundary checking.",
+        },
+        {
+          title: "7. Game Loop Logic",
+          code: `useEffect(() => {
+          window.addEventListener('keydown', handleKeyPress);
+          
+          const BULLET_SPEED = containerDimensions.height * 0.017;
+          const OBSTACLE_SPEED = containerDimensions.height * 0.005;
+          
+          const gameLoop = setInterval(() => {
+            if (!gameOver) {
+              // Bullet movement
+              setBullets(prev => 
+                prev
+                  .map(bullet => ({ 
+                    ...bullet, 
+                    y: bullet.y - BULLET_SPEED 
+                  }))
+                  .filter(bullet => bullet.y > 0)
+              );
+      
+              // Obstacle management
+              setObstacles(prev => {
+                const updated = prev
+                  .map(obstacle => ({
+                    ...obstacle,
+                    y: obstacle.y + OBSTACLE_SPEED
+                  }))
+                  .filter(obstacle => obstacle.y < containerDimensions.height);
+      
+                if (Math.random() < 0.05) {
+                  updated.push({
+                    id: Date.now(),
+                    x: Math.random() * (containerDimensions.width - 20),
+                    y: -20
+                  });
+                }
+                return updated;
+              });
+            }
+          }, 50);
+      
+          return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+            clearInterval(gameLoop);
+          };
+        }, [gameOver, handleKeyPress, containerDimensions, setBullets, setObstacles]);`,
+          explanation: "Implements the main game loop with relative speed calculations. Manages bullet and obstacle movement, spawning new obstacles randomly. Includes proper cleanup of event listeners and intervals.",
+        },
+        {
+          title: "8. Game Reset Handler",
+          code: `const handleRestart = useCallback(() => {
+          setGameOver(false);
+          setScore(0);
+          setTime(0);
+          setObstacles([]);
+          setBullets([]);
+          setPlayerPosition({ 
+            x: containerDimensions.width / 2 - 40, 
+            y: 20 
+          });
+        }, [containerDimensions, setGameOver, setScore, setTime, setObstacles, setBullets, setPlayerPosition]);`,
+          explanation: "Handles game reset functionality. Resets all game state to initial values and positions player relative to container size.",
+        },
+        {
+          title: "9. Game Board Rendering",
+          code: `return (
+          <div 
+            className="game-container"
+            style={{
+              width: \`\${containerDimensions.width}px\`,
+              height: \`\${containerDimensions.height}px\`
+            }}
+          >
+            <Timer gameOver={gameOver} />
+            <div className="score-display">Score: {score}</div>
+            
+            {obstacles.map(obstacle => (
+              <Obstacle 
+                key={obstacle.id} 
+                x={obstacle.x} 
+                y={obstacle.y} 
+              />
+            ))}
+            
+            {bullets.map(bullet => (
+              <Bullet 
+                key={bullet.id} 
+                x={bullet.x} 
+                y={bullet.y} 
+                id={bullet.id}
+              />
+            ))}
+            
+            <Spaceship position={playerPosition} />
+            
+            <CollisionManager
+              obstacles={obstacles}
+              playerPosition={playerPosition}
+              setGameOver={setGameOver}
+              gameOver={gameOver}
+              containerDimensions={containerDimensions}
+            />
+            
+            {gameOver && (
+              <GameOverMenu 
+                score={score} 
+                onRestart={handleRestart}
+              />
+            )}
+          </div>
+        );`,
+          explanation: "Renders the complete game interface with dynamic sizing. Components are positioned relative to container dimensions. Includes score display, game elements, and conditional rendering of the game over menu.",
+        }
+      ];
+      
 
   return (
     <div className="p-8 bg-black text-white">
