@@ -10,7 +10,8 @@ const SpaceshipPage = () => {
     },
     {
       title: "2. Functional Component Declaration",
-      code: `const Spaceship = ({ position }) => { ... };`,
+      code: `const Spaceship = ({ position }) => { ... };
+      return();`,
       explanation:
         "The `Spaceship` component is a functional component that receives a `position` prop. This prop determines the position of the spaceship on the game board.",
     },

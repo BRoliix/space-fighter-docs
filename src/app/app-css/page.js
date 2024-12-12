@@ -281,103 +281,122 @@ const AppCssPage = () => {
         - Responsive padding`
           },
           {
-            title: "6. Mobile Controls",
-            code: `/* Mobile Controls */
-      .mobile-controls {
-        display: none;
-        position: fixed;
-        bottom: 20px;
-        left: 0;
-        right: 0;
-        padding: 10px;
-        justify-content: space-around;
-        z-index: 1000;
-        gap: clamp(10px, 3vw, 20px);
-      }
-      
-      .control-button {
-        width: clamp(50px, 15vw, 70px);
-        height: clamp(50px, 15vw, 70px);
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        color: white;
-        font-size: clamp(20px, 5vw, 30px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        touch-action: manipulation;
-        transition: all 0.2s ease;
-      }
-      
-      .control-button:active {
-        background: rgba(255, 255, 255, 0.4);
-        transform: scale(0.95);
-      }
-      
-      @media (max-width: 768px) {
-        .mobile-controls {
-          display: flex;
-        }
-      }`,
-            explanation: `Mobile-specific controls:
-      
-      - **Control Container**: 
-        - Hidden by default, shown on mobile
-        - Fixed positioning for consistent access
-        - Flexible spacing with gap
-        - Touch-optimized layout
-      
-      - **Control Buttons**: 
-        - Circular design for touch targets
-        - Responsive sizing with clamp()
-        - Visual feedback on interaction
-        - Semi-transparent styling
-      
-      - **Touch Optimization**: 
-        - Manipulation handling
-        - Active state feedback
-        - Proper spacing for touch targets
-        - Smooth transitions`
-          },
+            title: "6. Landing Page",
+            code: `/* Landing Page */
+          .landing-container {
+            width: 100vw;
+            height: 100vh;
+            background: #000033;
+            position: relative;
+            overflow: hidden;
+          }
+          
+          .content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+          }
+          
+          .game-title {
+            background: linear-gradient(
+              45deg,
+              var(--gdg-blue) 25%,
+              var(--gdg-red) 25%,
+              var(--gdg-red) 50%,
+              var(--gdg-yellow) 50%,
+              var(--gdg-yellow) 75%,
+              var(--gdg-green) 75%
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: clamp(32px, 8vw, 64px);
+            text-align: center;
+            margin-bottom: clamp(20px, 5vw, 40px);
+            animation: glow 1.5s ease-in-out infinite alternate;
+          }
+          
+          .play-button {
+            background: var(--gdg-green);
+            border: none;
+            color: white;
+            padding: clamp(15px, 4vw, 20px) clamp(30px, 8vw, 40px);
+            font-size: clamp(18px, 4vw, 24px);
+            border-radius: clamp(16px, 4vw, 24px);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+          }`,
+            explanation: `Landing page styling:
+          
+          - **Container Layout**: 
+            - Full viewport dimensions
+            - Deep blue background
+            - Handles overflow content
+            - Relative positioning
+          
+          - **Content Arrangement**: 
+            - Centered flex layout
+            - Z-index management
+            - Responsive padding
+            - Box sizing control
+          
+          - **Title Styling**: 
+            - GDG colors gradient
+            - Text background clipping
+            - Responsive font sizing
+            - Glowing animation effect
+          
+          - **Button Design**: 
+            - GDG green background
+            - Responsive padding and sizing
+            - Smooth transitions
+            - Modern rounded corners`
+          },          
           {
             title: "7. Animations and Effects",
             code: `/* Animations */
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      
-      @keyframes pulse {
-        0% { transform: scale(1); opacity: 0.8; }
-        50% { transform: scale(1.1); opacity: 1; }
-        100% { transform: scale(1); opacity: 0.8; }
-      }
-      
-      @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-      }
-      
-      @keyframes glow {
-        0% { box-shadow: 0 0 5px var(--gdg-blue); }
-        50% { box-shadow: 0 0 20px var(--gdg-blue); }
-        100% { box-shadow: 0 0 5px var(--gdg-blue); }
-      }
-      
-      /* Particle Effects */
-      .particle {
-        position: absolute;
-        pointer-events: none;
-        animation: fadeOut 1s forwards;
-      }
-      
-      @keyframes fadeOut {
-        to {
-          opacity: 0;
-          transform: translate(var(--tx), var(--ty));
-        }
-      }`,
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 clamp(5px, 2vw, 10px) var(--gdg-blue),
+                 0 0 clamp(10px, 4vw, 20px) var(--gdg-blue),
+                 0 0 clamp(15px, 6vw, 30px) var(--gdg-red);
+  }
+  to {
+    text-shadow: 0 0 clamp(10px, 4vw, 20px) var(--gdg-blue),
+                 0 0 clamp(15px, 6vw, 30px) var(--gdg-yellow),
+                 0 0 clamp(20px, 8vw, 40px) var(--gdg-green);
+  }
+}
+
+@keyframes hover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(clamp(-10px, -2vw, -20px)); }
+}
+`,
             explanation: `Animation and visual effects:
       
       - **Fade Animations**: 

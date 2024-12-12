@@ -11,7 +11,8 @@ const ObstaclePage = () => {
     },
     {
       title: "2. Functional Component Declaration",
-      code: `const Obstacle = ({ x, y }) => { ... };`,
+      code: `const Obstacle = ({ x, y }) => { ... };
+      return();`,
       explanation:
         "The `Obstacle` component is a functional component that takes `x` and `y` as props. These props determine the position of the obstacle on the game board.",
     },

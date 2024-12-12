@@ -39,7 +39,7 @@ const AppPage = () => {
       code: `
         <Router>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage />} /> 
             <Route path="/game" element={<GameBoard />} />
           </Routes>
         </Router>

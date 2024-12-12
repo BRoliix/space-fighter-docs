@@ -5,8 +5,7 @@ const TimerPage = () => {
   const sections = [
     {
       title: "1. File Declaration and Imports",
-      code: `// Timer.jsx
-import React, { useEffect } from 'react';
+      code: `import React, { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { timerAtom } from '../store/atom';`,
       explanation:

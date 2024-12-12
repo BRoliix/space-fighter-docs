@@ -17,7 +17,8 @@ const LandingPagePage = () => {
     },
     {
       title: "3. Navigation Hook",
-      code: `const navigate = useNavigate();`,
+      code: `const navigate = useNavigate(); 
+      return( ... );`,
       explanation:
         "This hook initializes the `navigate` function, which is used to programmatically navigate to different routes in the application.",
     },
