@@ -14,24 +14,35 @@ const steps = [
       "Move into the directory of your new React app. This is where all your project files are located.",
   },
   {
-    title: "3. Install Jotai",
+    title: "3. Install React Router",
+    command: "npm install react-router-dom --save",
+    description:
+      "React Router enables navigation and routing in your React application. It allows you to create multi-page experiences in a single-page application by managing different views and URL patterns.",
+  },
+  {
+    title: "4. Install Jotai",
     command: "npm install jotai",
     description:
       "Jotai is a state management library that simplifies managing React application state. It provides a minimalistic API and is perfect for applications where you need simple and efficient state management.",
   },
   {
-    title: "4. Install Tailwind CSS",
+    title: "5. Install Tailwind CSS",
     command: "npm install -D tailwindcss postcss autoprefixer",
     description:
       "Tailwind CSS is a utility-first CSS framework for building custom designs. This step installs the necessary dependencies to start using Tailwind.",
   },
   {
-    title: "5. Initialize Tailwind CSS",
+    title: "6. Initialize Tailwind CSS",
     command: "npx tailwindcss init",
     description:
       "This command generates a `tailwind.config.js` file where you can customize your Tailwind CSS setup.",
   },
-  
+  {
+    title: "7. Install Development Dependencies",
+    command: "npm install ajv@8.16.0 ajv-keywords@5.1.0 schema-utils@4.2.0 --save-dev",
+    description:
+      "These packages are essential development tools: Ajv is a JSON Schema validator for data validation, ajv-keywords adds custom keywords support, and schema-utils provides webpack schema validation. Together they ensure proper data validation and schema handling during development.",
+  },
 ];
 
 export default function LetsGetStarted() {
